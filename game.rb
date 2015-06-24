@@ -1,11 +1,35 @@
 class Game
   attr_accessor :playing, :board, :traverser, :io
+
   def initialize(board, io)
     @board = board
     @io = io
     @traverser = Traverser.new(board)
     @playing = true
   end
+
+
+  def play
+    while playing do 
+      take_turn
+    end
+    end_game
+  end
+
+
+  def take_turn
+    user_action = false
+    until user_action do
+      io.clear
+      io.draw_game(board)
+      input = io.get_input
+      user_action = validate_turn input
+      io.incorrect(input) unless user_action
+    end
+    select(user_action[1],user_action[2]) if user_action[0] == :select
+    flag(user_action[1],user_action[2]) if user_action[0] == :flag
+  end
+
 
   def select(row_letter, column)
     coordinates = [get_row_number(row_letter), column]
@@ -28,59 +52,6 @@ class Game
     @playing = !game_over?
   end
 
-  def over?
-    !playing
-  end
-
-  def take_turn
-    user_action = false
-    until user_action do
-      io.clear
-      io.draw_game(board)
-      input = io.get_input
-      user_action = validate_turn input
-      io.incorrect(input) unless user_action
-    end
-    select(user_action[1],user_action[2]) if user_action[0] == :select
-    flag(user_action[1],user_action[2]) if user_action[0] == :flag
-  end
-
-  def validate_turn(input)
-    if input =~ /^[A-#{(board.width-1+65).chr}][1-#{board.width}]$/i then
-      lett = input.split('')[0]
-      col = input.split('')[1].to_i
-
-      return [:select, lett, col]
-
-    #If player flagged a tile
-    elsif input =~ /^flag [A-#{(board.width-1+65).chr}][1-#{board.width}]$/i then
-      input = input.split(' ')
-      lett = input[1].split('')[0]
-      col = input[1].split('')[1].to_i
-
-      return [:flag, lett, col]
-     #If incorrect input is entered
-    else
-      return false
-    end
-  end
-
-  def validate_yes_no(input)
-    if /^ye?s?$/i =~ input 
-      return :yes
-    elsif /^no?$/i =~ input
-      return :no
-    else
-      return input
-    end
-  end
-
-  def play
-    while playing do 
-      take_turn
-    end
-    end_game
-  end
 
   def end_game
     keep_asking = true
@@ -102,11 +73,13 @@ class Game
     end   
   end
 
+
   def reset
     @board = Board.new(9,10)
     @playing = true
     @traverser = Traverser.new(board)
   end
+
 
   def score
     score = 0
@@ -174,6 +147,37 @@ class Game
     board.each { |square| return true if square.exploded? }
     board.each { |square| return false if !square.revealed? && !square.flagged?}
     return true
+  end
+
+
+  def validate_turn(input)
+    if input =~ /^[A-#{(board.width-1+65).chr}][1-#{board.width}]$/i then
+      lett = input.split('')[0]
+      col = input.split('')[1].to_i
+
+      return [:select, lett, col]
+
+    #If player flagged a tile
+    elsif input =~ /^flag [A-#{(board.width-1+65).chr}][1-#{board.width}]$/i then
+      input = input.split(' ')
+      lett = input[1].split('')[0]
+      col = input[1].split('')[1].to_i
+
+      return [:flag, lett, col]
+     #If incorrect input is entered
+    else
+      return false
+    end
+  end
+
+  def validate_yes_no(input)
+    if /^ye?s?$/i =~ input 
+      return :yes
+    elsif /^no?$/i =~ input
+      return :no
+    else
+      return input
+    end
   end
 
 

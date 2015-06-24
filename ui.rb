@@ -1,4 +1,4 @@
-class Minesweeper_UI
+class UI
   def initialize
 
   end
@@ -6,12 +6,15 @@ class Minesweeper_UI
   def clear
     system('clear')
   end
+
+
   def draw_game(board, game_over=false)
     clear
     print_header
     draw_board(board, game_over)
     STDOUT.puts "\n"
   end
+
 
   def draw_board(board, game_over = false)
     output = " "
@@ -51,16 +54,19 @@ class Minesweeper_UI
     STDOUT.puts output
   end
 
+
   def get_input(prompt = "Input: ")
     STDOUT.print prompt
     input = STDIN.gets.chomp
     return input
   end
 
+
   def incorrect(input)
     STDOUT.puts "'#{input}' is incorrect input"
     sleep(1)
   end
+
 
   def print_header
     STDOUT.puts '    __  ____                                              
@@ -72,6 +78,7 @@ class Minesweeper_UI
     STDOUT.puts "\n "
     STDOUT.puts "Welcome to Minesweepr! Instructions:\n\n To select A1 => a1 \n To flag tile => flag a1\n\n"
   end
+
 
   def show_score score
     good_flags = score[:good_flags]
@@ -87,5 +94,4 @@ class Minesweeper_UI
     if good_flags > 0 || bad_flags > 0 then STDOUT.puts ")" end
     if good_flags == 0 && bad_flags ==  0 then STDOUT.puts "" end
   end
-
 end

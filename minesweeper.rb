@@ -1,11 +1,11 @@
 require "./board.rb"
 require "./square.rb"
-require "./io.rb"
+require "./ui.rb"
 require "./game.rb"
 
 board = Board.new(9,10)
-io = IO.new()
-game = Game.new(board,io)
+ui = UI.new()
+game = Game.new(board,ui)
 
 
 game.play
