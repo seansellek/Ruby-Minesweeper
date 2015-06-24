@@ -87,7 +87,7 @@ class Game
     while keep_asking do
       board.reveal_all
       io.clear
-      io.draw_game(board)
+      io.draw_game(board, true)
       io.show_score score
       input = io.get_input("Play Again? (y/n) ")
       input = validate_yes_no(input)

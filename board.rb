@@ -1,5 +1,7 @@
 class Board
   attr_accessor :width, :num_mines, :board 
+  include Enumerable
+
   def initialize(width, num_mines)
     @width = width
     @num_mines = num_mines
@@ -23,7 +25,7 @@ class Board
   end
 
   def each &block
-    @board.each {|e| yield(e)}
+    @board.each(&block)
   end
 
   def to_s

@@ -6,11 +6,49 @@ class IO
   def clear
     system('clear')
   end
-  def draw_game board
+  def draw_game(board, game_over=false)
     clear
     print_header
-    STDOUT.puts board
+    draw_board(board, game_over)
     STDOUT.puts "\n"
+  end
+
+  def draw_board(board, game_over = false)
+    output = " "
+    width = board.width
+
+    width.times do |i| #Output Header
+      if (i < 9)
+        output << "  #{i+1}" << ""
+      elsif (i == 9)
+        output << "  #{i+1}" << ""
+      else
+        output << " #{i+1}" << ""
+      end
+    end
+
+    board.each_with_index do |square, i|
+      output << "\n#{("A".ord + (i/width)).chr}  " if (i % width == 0)
+
+      if square.flagged?
+        if game_over && square.value == :bomb
+          output << "✅  "
+        elsif game_over
+          output << "❌  "
+          else 
+          output << "🚩  "
+        end
+      elsif square.exploded?
+        output << "💥  "
+      elsif square.revealed?
+        output << "💣  " if square.value == :bomb
+        output << "▪︎  " if square.value == :empty
+        output << "#{square.value}  " if square.value.class == Fixnum
+      else
+        output << "⬛ ️ "
+      end
+    end
+    STDOUT.puts output
   end
 
   def get_input(prompt = "Input: ")
