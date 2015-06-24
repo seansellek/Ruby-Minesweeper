@@ -81,7 +81,7 @@ class Board
     num_mines.times do |i|
       @board[i].value = :bomb
     end
-    #@board.shuffle!
+    @board.shuffle!
   end
 
   def add_risks

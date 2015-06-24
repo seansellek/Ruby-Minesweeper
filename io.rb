@@ -1,4 +1,4 @@
-class IO
+class Minesweeper_UI
   def initialize
 
   end
