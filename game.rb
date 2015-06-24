@@ -103,10 +103,9 @@ class Game
   end
 
   def reset
-    board = Board.new(9,10)
-    playing = true
-    p playing
-    traverser = Traverser.new(board)
+    @board = Board.new(9,10)
+    @playing = true
+    @traverser = Traverser.new(board)
   end
 
   def score

@@ -40,13 +40,14 @@ class IO
     bad_flags = score[:bad_flags]
     won = score[:won?]
     score = score[:score]
-    STDOUT.print won ? "YOU WIN! " : "\aGAME OVER "
+    STDOUT.print won ? "YOU WIN! " : "\aGAME OVER! "
     STDOUT.print "Your Score: #{score}"
     if good_flags > 0 || bad_flags > 0 then STDOUT.print " (" end
     if good_flags > 0 then STDOUT.print "#{good_flags} correctly flagged mine#{good_flags>1 ? 's' : ''}" end
     if good_flags > 0 && bad_flags > 0 then STDOUT.print " - " end
     if bad_flags > 0 then STDOUT.print "#{bad_flags} false positive#{bad_flags > 1 ? 's' : ''}" end 
     if good_flags > 0 || bad_flags > 0 then STDOUT.puts ")" end
+    if good_flags == 0 && bad_flags ==  0 then STDOUT.puts "" end
   end
-  
+
 end
