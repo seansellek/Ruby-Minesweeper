@@ -8,26 +8,24 @@ class UI
     system('clear')
   end
 
-
-  def draw_game(board, game_over=false)
+  def draw_game(_board, game_over = false)
     clear
     print_header
     draw_board(@board, game_over)
     puts "\n"
   end
 
-
   def draw_board(board, game_over = false)
-    output = " "
+    output = ' '
     width = board.width
 
-    width.times do |i| #Output Header
-      if (i < 9)
-        output << "  #{i+1}" << ""
+    width.times do |i| # Output Header
+      if i < 9
+        output << "  #{i + 1}" << ''
       elsif (i == 9)
-        output << "  #{i+1}" << ""
+        output << "  #{i + 1}" << ''
       else
-        output << " #{i+1}" << ""
+        output << " #{i + 1}" << ''
       end
     end
 
@@ -36,20 +34,20 @@ class UI
     # num_rows.times { letter = letter.next }
 
     board.each_with_index do |square, i|
-      output << "\n#{("A".ord + (i/width)).chr}  " if (i % width == 0)
+      output << "\n#{('A'.ord + (i / width)).chr}  " if (i % width == 0)
 
       if square.flagged?
         if game_over
           if square.value == :bomb
-            output << "✅  "
+            output << '✅  '
           else
-            output << "❌  "
+            output << '❌  '
           end
         else
-          output << "🚩  "
+          output << '🚩  '
         end
       elsif square.exploded?
-        output << "💥  "
+        output << '💥  '
       elsif square.revealed?
         # output << case square.value
         #           when :bomb
@@ -57,11 +55,11 @@ class UI
         #           else
         #             "#{square.value} "
         #           end
-        output << "💣  " if square.value == :bomb
-        output << "▪︎  " if square.value == :empty
+        output << '💣  ' if square.value == :bomb
+        output << '▪︎  ' if square.value == :empty
         output << "#{square.value}  " if square.value.is_a? Fixnum
       else
-        output << "⬛ ️ "
+        output << '⬛ ️ '
       end
     end
     puts output
@@ -71,19 +69,16 @@ class UI
 
   # end
 
-
-  def get_input(prompt = "Input: ")
+  def get_input(prompt = 'Input: ')
     print prompt
     input = STDIN.gets.chomp
-    return input
+    input
   end
-
 
   def incorrect(input)
     puts "'#{input}' is incorrect input"
     sleep(1)
   end
-
 
   def print_header
     puts '    __  ____
@@ -96,19 +91,18 @@ class UI
     puts "Welcome to Minesweepr! Instructions:\n\n To select A1 => a1 \n To flag tile => flag a1\n\n"
   end
 
-
-  def show_score score
+  def show_score(score)
     good_flags = score[:good_flags]
     bad_flags = score[:bad_flags]
     won = score[:won?]
     score = score[:score]
-    print won ? "YOU WIN! " : "\aGAME OVER! "
+    print won ? 'YOU WIN! ' : "\aGAME OVER! "
     print "Your Score: #{score}"
-    if good_flags > 0 || bad_flags > 0 then print " (" end
-    if good_flags > 0 then print "#{good_flags} correctly flagged mine#{good_flags>1 ? 's' : ''}" end
-    if good_flags > 0 && bad_flags > 0 then print " - " end
+    print ' (' if good_flags > 0 || bad_flags > 0
+    if good_flags > 0 then print "#{good_flags} correctly flagged mine#{good_flags > 1 ? 's' : ''}" end
+    print ' - ' if good_flags > 0 && bad_flags > 0
     if bad_flags > 0 then print "#{bad_flags} false positive#{bad_flags > 1 ? 's' : ''}" end
-    if good_flags > 0 || bad_flags > 0 then puts ")" end
-    if good_flags == 0 && bad_flags ==  0 then puts "" end
+    puts ')' if good_flags > 0 || bad_flags > 0
+    puts '' if good_flags == 0 && bad_flags == 0
   end
 end
