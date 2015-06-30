@@ -1,17 +1,17 @@
 class Board
-  attr_accessor :width, :num_mines, :board 
+  attr_accessor :width, :num_mines, :board
   include Enumerable
 
   def initialize(width, num_mines)
     @width = width
     @num_mines = num_mines
     @board = Array.new(@width*@width) {Square.new(:empty)}
-    add_mines 
+    add_mines
     add_risks
   end
 
 
-  def length 
+  def length
     @board.length
   end
 
@@ -42,7 +42,7 @@ class Board
     end
     board.each_with_index do |square, i|
       output << "\n#{("A".ord + (i/width)).chr}  " if (i % width == 0)
-      if square.flagged? 
+      if square.flagged?
         output << "🚩  "
       elsif square.exploded?
         output << "💥  "
@@ -81,9 +81,7 @@ class Board
 
 
   def add_mines
-    num_mines.times do |i|
-      @board[i].value = :bomb
-    end
+    num_mines.times { |i| @board[i].value = :bomb }
     @board.shuffle!
   end
 
@@ -100,7 +98,12 @@ class Board
   def get_risk(index)
     origin_square = get_coords(index)
     last = @width + 1
-    count = 0 
+    count = 0
+    # origin_square.neighbors.each do |neighbor|
+    #   if neighbor.bomb?
+    #     count += 1
+    #    end
+    # end
     bordering = [ [-1,-1], [-1,0], [-1,1], [0,1], [1,1], [1,0], [1,-1], [0,-1] ]
 
     bordering.each_with_index do |translation, i|

@@ -1,11 +1,12 @@
 class Square
-  attr_accessor :value
+  attr_accessor :value, :neighbors
 
   def initialize(value)
     @value = value
     @flagged = false
     @revealed = false
     @exploded = false 
+    @neighbors = []
   end
 
   def flag
@@ -31,9 +32,9 @@ class Square
     @exploded
   end
   def is_empty?
-    return  @value == :empty ? true : false
+    @value == :empty
   end
   def is_bomb?
-    return @value == :bomb
+    @value == :bomb
   end
 end
