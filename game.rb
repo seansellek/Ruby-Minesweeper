@@ -71,6 +71,7 @@ class Game
     @board = Board.new(9, 10)
     @playing = true
     @traverser = Traverser.new(board)
+    @io = UI.new(board)
   end
 
   def score
